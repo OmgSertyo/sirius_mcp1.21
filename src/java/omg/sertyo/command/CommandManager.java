@@ -1,0 +1,52 @@
+package omg.sertyo.command;
+
+import com.darkmagician6.eventapi.EventManager;
+import omg.sertyo.command.impl.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class CommandManager {
+   private final ArrayList<CommandAbstract> commands = new ArrayList();
+   private static String prefix = ".";
+
+   public CommandManager() {
+      EventManager.register(new CommandHandler(this));
+   }
+
+   public List<CommandAbstract> getCommands() {
+      return this.commands;
+   }
+
+   public boolean execute(String args) {
+      Iterator var2 = this.commands.iterator();
+
+      CommandAbstract command;
+      String[] split;
+      do {
+         if (!var2.hasNext()) {
+            return false;
+         }
+
+         command = (CommandAbstract)var2.next();
+         split = args.substring(1).split(" ");
+      } while(!split[0].equalsIgnoreCase(command.name));
+
+      try {
+         command.execute(split);
+      } catch (Exception var6) {
+         command.error();
+      }
+
+      return true;
+   }
+
+   public static String getPrefix() {
+      return prefix;
+   }
+
+   public static void setPrefix(String prefix) {
+      CommandManager.prefix = prefix;
+   }
+}
