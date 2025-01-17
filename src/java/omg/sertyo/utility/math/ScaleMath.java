@@ -13,7 +13,7 @@ public class ScaleMath {
       if (!System.getProperty("os.name").contains("mac"))
        guiGraphics.pose().scale(2.0F, 2.0F, 2.0F);
       else
-       guiGraphics.pose().scale(2, 2, 2);
+       guiGraphics.pose().scale(3, 3, 3);
    }
 
    public void popScale(GuiGraphics guiGraphics) {

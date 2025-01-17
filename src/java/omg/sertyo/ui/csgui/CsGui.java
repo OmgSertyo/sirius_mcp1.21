@@ -23,7 +23,6 @@ import omg.sertyo.ui.csgui.component.impl.ThemeComponent;
 import omg.sertyo.ui.csgui.window.ColorPickerWindow;
 import omg.sertyo.utility.render.ColorUtility;
 import omg.sertyo.utility.render.RenderUtility;
-import omg.sertyo.utility.render.StencilUtility;
 import omg.sertyo.utility.render.animation.Animation;
 import omg.sertyo.utility.render.animation.AnimationMath;
 import omg.sertyo.utility.render.animation.Direction;

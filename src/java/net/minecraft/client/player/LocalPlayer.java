@@ -477,11 +477,9 @@ public class LocalPlayer extends AbstractClientPlayer {
 
     @Override
     public void sendSystemMessage(Component pComponent) {
-        EventMessage event = new EventMessage(pComponent.getString());
-        EventManager.call(event);
-        if (!event.isCancelled()) {
+
             this.minecraft.gui.getChat().addMessage(pComponent);
-        }
+
 
     }
 

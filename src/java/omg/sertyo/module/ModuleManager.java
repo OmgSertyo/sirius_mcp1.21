@@ -1,6 +1,7 @@
 package omg.sertyo.module;
 
 import omg.sertyo.module.impl.render.Glint;
+import omg.sertyo.module.impl.render.TestModule;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ public class ModuleManager {
 
    public ModuleManager() {
       this.registerModule(new Glint());
+      this.registerModule(new TestModule());
    }
 
    public void registerModule(Module module) {

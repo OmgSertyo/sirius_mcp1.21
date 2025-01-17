@@ -7,8 +7,10 @@ import lombok.Getter;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
 import omg.sertyo.command.CommandManager;
 import omg.sertyo.event.input.EventInputKey;
+import omg.sertyo.event.misc.EventMessage;
 import omg.sertyo.event.render.EventRender2D;
 import omg.sertyo.manager.config.ConfigManager;
 import omg.sertyo.manager.dragging.DragManager;
@@ -21,6 +23,7 @@ import omg.sertyo.module.Module;
 import omg.sertyo.module.ModuleManager;
 import omg.sertyo.ui.csgui.CsGui;
 import omg.sertyo.utility.math.ScaleMath;
+import omg.sertyo.utility.misc.KeyMappings;
 import omg.sertyo.utility.render.RenderUtility;
 import omg.sertyo.utility.render.font.Fonts;
 import org.lwjgl.glfw.GLFW;
@@ -145,8 +148,23 @@ public class Babulka {
             }
             if (eventInputKey.getKey() == GLFW.GLFW_KEY_RIGHT_SHIFT)
                 mc.setScreen(new CsGui());
+            this.macroManager.onKeyPressed(eventInputKey.getKey());
         }
     }
-
-
+    public static String getKey(int integer) {
+        if (integer < 0) {
+            return switch (integer) {
+                case -100 -> I18n.get("key.mouse.left");
+                case -99 -> I18n.get("key.mouse.right");
+                case -98 -> I18n.get("key.mouse.middle");
+                default -> "MOUSE" + (integer + 101);
+            };
+        } else {
+            return (GLFW.glfwGetKeyName(integer, -1) == null ? KeyMappings.reverseKeyMap.get(integer) : GLFW.glfwGetKeyName(integer, -1)) ;
+        }
+    }
+    @EventTarget
+    public void onMessage(EventMessage eventMessage) {
+        System.out.println(eventMessage.getMessage());
+    }
 }

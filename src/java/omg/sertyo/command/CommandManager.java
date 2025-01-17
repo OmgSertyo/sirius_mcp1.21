@@ -13,6 +13,12 @@ public class CommandManager {
 
    public CommandManager() {
       EventManager.register(new CommandHandler(this));
+      this.commands.add(new BindCommand());
+      this.commands.add(new PrefixCommand());
+      this.commands.add(new ConfigCommand());
+      this.commands.add(new MacroCommand());
+      this.commands.add(new HelpCommand());
+      this.commands.add(new FriendCommand());
    }
 
    public List<CommandAbstract> getCommands() {

@@ -1,5 +1,6 @@
 package net.minecraft.client.multiplayer;
 
+import com.darkmagician6.eventapi.EventManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -305,6 +306,7 @@ import net.minecraft.world.scores.ScoreHolder;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.Team;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import omg.sertyo.event.misc.EventMessage;
 import org.slf4j.Logger;
 
 public class ClientPacketListener extends ClientCommonPacketListenerImpl implements ClientGamePacketListener, TickablePacketListener {
@@ -2388,7 +2390,11 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
         long i = Crypt.SaltSupplier.getLong();
         LastSeenMessagesTracker.Update lastseenmessagestracker$update = this.lastSeenMessages.generateAndApplyUpdate();
         MessageSignature messagesignature = this.signedMessageEncoder.pack(new SignedMessageBody(pMessage, instant, i, lastseenmessagestracker$update.lastSeen()));
-        this.send(new ServerboundChatPacket(pMessage, instant, i, messagesignature, lastseenmessagestracker$update.update()));
+        EventMessage event = new EventMessage(pMessage);
+        EventManager.call(event);
+        if (!event.isCancelled()) {
+            this.send(new ServerboundChatPacket(pMessage, instant, i, messagesignature, lastseenmessagestracker$update.update()));
+        }
     }
 
     public void sendCommand(String pCommand) {
@@ -2406,14 +2412,15 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
             this.send(new ServerboundChatCommandSignedPacket(pCommand, instant, i, argumentsignatures, lastseenmessagestracker$update.update()));
         }
     }
-
+    //Отослала типо ещкере комманду отослала 2024
     public boolean sendUnsignedCommand(String pCommand) {
-        if (!SignableCommand.hasSignableArguments(this.parseCommand(pCommand))) {
-            this.send(new ServerboundChatCommandPacket(pCommand));
-            return true;
-        } else {
-            return false;
+        boolean result;
+        EventMessage event = new EventMessage(pCommand);
+        EventManager.call(event);
+        if (!event.isCancelled()) {
+                this.send(new ServerboundChatCommandPacket(pCommand));
         }
+        return true;
     }
 
     private ParseResults<SharedSuggestionProvider> parseCommand(String pCommand) {
